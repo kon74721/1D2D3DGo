@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Build/Cesium/Cesium.js"></script>
+  <style>
+      @import url(../Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    var viewer = new Cesium.Viewer('cesiumContainer');	
+	
+	//var startDate = new Cesium.JulianDate(1700, 0, Cesium.TimeStandard.UTC);
+	//var endDate = new Cesium.JulianDate(2018, 0, Cesium.TimeStandard.UTC);
+	
+	
+	var clock = new Cesium.Clock({
+   startTime : Cesium.JulianDate.fromIso8601("2013-12-25"),
+   //currentTime : Cesium.JulianDate.fromIso8601("2013-12-25"),
+   stopTime : Cesium.JulianDate.fromIso8601("2014-12-26"),
+   clockRange : Cesium.ClockRange.LOOP_STOP,
+   clockStep : Cesium.ClockStep.SYSTEM_CLOCK_MULTIPLIER
+});
+//var timeline = new Cesium.Timeline(viewer, clock);
+viewer.clock = clock;
+	//zoomTo(startTime, stopTime)
+
+//dd geocache billboard entities to scene and style them
+//
+//    if (Cesium.defined(entity.billboard)) {
+//        // Adjust the vertical origin so pins sit on terrain
+//        entity.billboard.verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
+//        // Disable the labels to reduce clutter
+//        entity.label = undefined;
+//        // Add distance display condition
+//        entity.billboard.distanceDisplayCondition = new Cesium.DistanceDisplayCondition(10.0, 20000.0);
+//    }
+//
+//dd geocache billboard entities to scene and style them
+//    if (Cesium.defined(entity.billboard)) {
+//        // Adjust the vertical origin so pins sit on terrain
+//        entity.billboard.verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
+//        // Disable the labels to reduce clutter
+//        entity.label = undefined;
+//        // Add distance display condition
+//        entity.billboard.distanceDisplayCondition = new Cesium.DistanceDisplayCondition(10.0, 20000.0);
+//        // Compute longitude and latitude in degrees
+//        var cartographicPosition = Cesium.Cartographic.fromCartesian(entity.position.getValue(Cesium.JulianDate.now()));
+//        var longitude = Cesium.Math.toDegrees(cartographicPosition.longitude);
+//        var latitude = Cesium.Math.toDegrees(cartographicPosition.latitude);
+//        // Modify description
+//        // Modify description
+//        var description = '<table class="cesium-infoBox-defaultTable cesium-infoBox-defaultTable-lighter"><tbody>' +
+//            '<tr><th>' + "Longitude" + '</th><td>' + longitude.toFixed(5) + '</td></tr>' +
+//            '<tr><th>' + "Latitude" + '</th><td>' + latitude.toFixed(5) + '</td></tr>' +
+//            '</tbody></table>';
+//        entity.description = description;
+//    }		
+//
+		
+	
+	
+	var geojsonOptions = {
+    clampToGround : false
+};
+//var neighborhoodsPromise = Cesium.GeoJsonDataSource.load('sampleNeighborhoods.geojson', geojsonOptions);
+var neighborhoodsPromise = Cesium.GeoJsonDataSource.load('https://data.nasa.gov/resource/y77d-th95.geojson', geojsonOptions);
+
+// Save an new entity collection of neighborhood data
+var neighborhoods;
+neighborhoodsPromise.then(function(dataSource) {
+    // Add the new data as entities to the viewer
+    viewer.dataSources.add(dataSource);
+    neighborhoods = dataSource.entities;
+
+    // Get the array of entities
+    var neighborhoodEntities = dataSource.entities.values;
+    for (var i = 0; i < neighborhoodEntities.length; i++) {
+        var entity = neighborhoodEntities[i];
+
+        if (Cesium.defined(entity.billboard)) {
+            //entity.billboard.show = false;
+	    //var billboard = new Cesium.DynamicBillboard();
+	    //billboard.image = new Cesium.ConstantProperty('Rock.01.glb');
+	    //defaultPoint.billboard = billboard;
+	    //entity.billboard.image = new Cesium.ConstantProperty('Rock.01.glb');
+	    entity.billboard.image = 'meteor.png';
+	    if (Cesium.defined(entity.properties.mass._value)) {
+	       entity.billboard.scale = Math.log10(parseInt(entity.properties.mass._value)) / 6;
+	    }
+		//if (Cesium.defined(entity.properties.year._value)){
+		//new Cesium.PositionProperty()
+		//entity.position.
+        }
+    }
+});
+
+
+  </script>
+</body>
+</html>
