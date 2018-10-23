@@ -22,7 +22,7 @@ node server.js
 5. Copy the files from the App folder of this repository inside the folder Cesium 1.5/Apps
 
 6. Open a browser on the address
-http://localhost:8080/Apps/Meteoreach.html
+http://localhost:8080/Apps/meteoreach.html
 
 This should run the application.
 
